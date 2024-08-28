@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+	  	"strict": true,
+		"target": "es2019",
+		"module": "preserve",
+		"outDir": "dist",
+		"sourceMap": true,
+		"allowSyntheticDefaultImports": true,    
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames":true,
+	  	"resolveJsonModule": true
+	},
+	"include": [
+		  "src/**/*.ts"
+	  ],
+	  "exclude": [
+		  ".yarn",
+		  "src/tests/**"
+	  ]
+  }
+  
