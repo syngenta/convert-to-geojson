@@ -18,7 +18,7 @@ Here
 
 If you have multiple files, you need to call this function multiple times.
 
-## Outout will look like this
+## Output will look like this
 ```
 {
     "response": {
