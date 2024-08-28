@@ -49,7 +49,7 @@ jobs:
             cat package.json
             mkdir -p packages
             NPM_TOKEN=$FURY_AUTH yarn build
-            NPM_TOKEN=$FURY_AUTH yarn pack -o packages/syngenta-digital-convert-shape-files-to-geojson.tgz
+            NPM_TOKEN=$FURY_AUTH yarn pack --dry-run --out /packages/syngenta-digital-convert-shape-files-to-geojson.tgz
       - run :
           name: Publish package
           command: |
