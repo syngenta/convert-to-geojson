@@ -1,4 +1,4 @@
-import { getFileName, getExtension, changeProjection, getCorrectResponse } from '../utils';
+import { getFileName, getExtension, changeProjection, getCorrectResponse } from './../src/utils';
 import { geojson } from './test_constants';
 
 describe('getFileName', () => {
