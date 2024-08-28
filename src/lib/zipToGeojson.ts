@@ -1,6 +1,7 @@
 import JSZip from 'jszip';
 import shp from 'shpjs';
 import fs from 'fs';
+import path from 'path';
 import { getExtension, getFileName, changeProjection, getCorrectResponse } from './../utils';
 
 /**
@@ -34,6 +35,7 @@ export const validateZip = async (file: any) => {
   let fileCount = 0;
   const MAX_SIZE = 1000000000;
   let totalSize = 0;
+  const targetDirectory = __dirname + '/archive_tmp';
   let error: any;
   fs.readFile(file, function (err, data) {
     if (err) {
@@ -41,30 +43,32 @@ export const validateZip = async (file: any) => {
     }
     JSZip.loadAsync(data).then((zip) => {
       zip.forEach(async (relativePath, zipEntry) => {
-        // Sensitive
-        if (!zip.file(zipEntry.name)) {
-          fs.mkdirSync(zipEntry.name);
-        } else {
-          zip
-            .file(zipEntry.name)
-            ?.async('nodebuffer')
-            .then((content) => {
-              fs.writeFileSync(zipEntry.name, content);
-            });
-        }
         fileCount++;
         if (fileCount > MAX_FILES) {
           error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
         }
-        if (zipEntry.name) {
-          const fileSize = await getFileSize(zip, zipEntry);
-          totalSize += fileSize;
-          if (totalSize > MAX_SIZE) {
-            error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
-          } else {
-            const ext = getExtension(zipEntry.name, false);
-            if (ext) {
-              providedExt.push(ext);
+        // Prevent ZipSlip path traversal (S6096)
+        const resolvedPath = path.join(targetDirectory, zipEntry.name);
+        if (!resolvedPath.startsWith(targetDirectory)) {
+          error = new Error('Path traversal detected');
+        }
+        if (!zip.file(zipEntry.name)) {
+          fs.mkdirSync(resolvedPath);
+        } else {
+          const newfile = zip.file(zipEntry.name);
+          if (newfile) {
+            const newfileContent = await newfile.async('nodebuffer');
+            if (newfileContent) {
+              totalSize += newfileContent.length;
+              fs.writeFileSync(resolvedPath, newfileContent);
+            }
+            if (totalSize > MAX_SIZE) {
+              error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
+            } else {
+              const ext = getExtension(zipEntry.name, false);
+              if (ext) {
+                providedExt.push(ext);
+              }
             }
           }
         }
