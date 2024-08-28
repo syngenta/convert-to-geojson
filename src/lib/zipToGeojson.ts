@@ -41,6 +41,17 @@ export const validateZip = async (file: any) => {
     }
     JSZip.loadAsync(data).then((zip) => {
       zip.forEach(async (relativePath, zipEntry) => {
+        // Sensitive
+        if (!zip.file(zipEntry.name)) {
+          fs.mkdirSync(zipEntry.name);
+        } else {
+          zip
+            .file(zipEntry.name)
+            ?.async('nodebuffer')
+            .then((content) => {
+              fs.writeFileSync(zipEntry.name, content);
+            });
+        }
         fileCount++;
         if (fileCount > MAX_FILES) {
           error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
