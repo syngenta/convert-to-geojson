@@ -23,7 +23,7 @@ jobs:
       - run:
           name: Run Jest and Collect Coverage Reports
           command: |
-            NPM_TOKEN=$FURY_AUTH yarn test --ci --runInBand             
+            NPM_TOKEN=$FURY_AUTH yarn test             
       - store_test_results:
           path: ./reports/
           when: always
