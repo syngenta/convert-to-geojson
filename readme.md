@@ -4,11 +4,11 @@
 This package will help us to extract the geojson data from different shape files. It supports following files - `zip, kml, wkt, topojson, json, geojson`.
 
 ## Installation
-`npm install --save @syngenta-digital/package-node-convert-shape-files-to-geojson`
+`npm install --save @syngenta-digital/convert-shape-files-to-geojson`
 
 ## How to use?
 Import the package:
-`import getGeojson from '@syngenta-digital/package-node-convert-shape-files-to-geojson';`
+`import getGeojson from '@syngenta-digital/convert-shape-files-to-geojson';`
 
 Call the function:
 `const geojson = await getGeojson(file);`
@@ -62,7 +62,7 @@ If you have multiple files, you need to call this function multiple times.
 ```
 
 ## Files for testing:
-You can use files from `test_files` folder for testing
+You can use files from `shape_files_for_testing` folder for testing
 
 ## References
 - https://github.com/mapbox/togeojson#readme
