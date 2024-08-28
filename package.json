@@ -63,5 +63,8 @@
       "FileReader": null
     },
     "preset": "ts-jest"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
