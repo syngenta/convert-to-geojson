@@ -33,6 +33,7 @@
     "@types/wellknown": "^0.5.8",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
+    "blob-polyfill": "^9.0.20240710",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
@@ -60,7 +61,7 @@
     "coverageDirectory": "coverage",
     "testEnvironment": "node",
     "globals": {
-      "FileReader": null
+      "Blob": null
     },
     "preset": "ts-jest"
   },
