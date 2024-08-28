@@ -12,8 +12,14 @@ export const fromZipToGeojson = async (file: any, projectionType: string) => {
     const mandatoryExt = ['shp', 'dbf', 'shx'];
     const providedExt: any = [];
     let missingMandatoryExt: string[] = [];
+    const MAX_FILES = 1000;
+    let fileCount = 0;
     JSZip.loadAsync(file).then((zip) => {
       zip.forEach((relativePath, zipEntry) => {
+        fileCount++;
+        if (fileCount > MAX_FILES) {
+          return new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
+        }
         const ext = getExtension(zipEntry.name, false);
         if (ext) {
           providedExt.push(ext);
