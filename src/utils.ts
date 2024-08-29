@@ -1,4 +1,6 @@
 import proj4 from 'proj4';
+import JSZip from 'jszip';
+import fs from 'fs';
 
 /**
  * get filename before extension
@@ -94,4 +96,71 @@ export const convertJson = async (file: any) => {
   const data = await file.text();
   const geojson = JSON.parse(data);
   return getCorrectResponse(geojson, file.name);
+};
+
+/**
+ *
+ * @param zip
+ * @param zipEntry
+ * @returns
+ */
+export const getFileSize = async (zip: any, zipEntry: any) => {
+  const newfile = zip.file(zipEntry.name);
+  let size = 0;
+  if (newfile) {
+    const newfileContent = await newfile.async('nodebuffer');
+    if (newfileContent) {
+      size = newfileContent.length;
+    }
+  }
+  return size;
+};
+
+/**
+ *
+ * @param file
+ * @returns
+ */
+export const validateZip = async (file: any) => {
+  const mandatoryExt = ['shp', 'dbf', 'shx'];
+  const providedExt: any = [];
+  let missingMandatoryExt: string[] = [];
+  const MAX_FILES = 1000;
+  let fileCount = 0;
+  const MAX_SIZE = 1000000000;
+  let totalSize = 0;
+  let error: any;
+  fs.readFile(file, function (err, data) {
+    if (err) {
+      error = err;
+    }
+    JSZip.loadAsync(data).then((zip) => {
+      zip.forEach(async (relativePath, zipEntry) => {
+        fileCount++;
+        if (fileCount > MAX_FILES) {
+          error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
+        }
+        if (zipEntry.name) {
+          const fileSize = await getFileSize(zip, zipEntry);
+          totalSize += fileSize;
+          if (totalSize > MAX_SIZE) {
+            error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
+          } else {
+            const ext = getExtension(zipEntry.name, false);
+            if (ext) {
+              providedExt.push(ext);
+            }
+          }
+        }
+      });
+
+      missingMandatoryExt = mandatoryExt.filter((ext) => {
+        return !providedExt.includes(ext);
+      });
+    });
+  });
+  return {
+    missingMandatoryExt,
+    error,
+  };
 };
