@@ -56,12 +56,16 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "src/**/*.(t|j)s"
+      "src/lib/*.(t|j)s",
+      "src/index.ts",
+      "src/getGeojson.ts",
+      "src/utils.ts"
     ],
     "coverageDirectory": "coverage",
     "testEnvironment": "node",
     "globals": {
-      "Blob": null
+      "Blob": null,
+      "DOMParser": null
     },
     "preset": "ts-jest"
   },
