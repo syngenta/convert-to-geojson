@@ -1,5 +1,12 @@
-import { getFileName, getExtension, changeProjection, getCorrectResponse } from './../src/utils';
+import {
+  getFileName,
+  getExtension,
+  changeProjection,
+  getCorrectResponse,
+  convertJson,
+} from './../src/utils';
 import { geojson } from './test_constants';
+import { Blob } from 'blob-polyfill';
 
 describe('getFileName', () => {
   it('returns file name for filename with extension', () => {
@@ -88,5 +95,29 @@ describe('getCorrectResponse', () => {
       response: geojson,
       fileName: getFileName(fileName),
     });
+  });
+});
+
+describe('convertJson', () => {
+  beforeEach(() => {
+    global.Blob = Blob;
+  });
+  it('should return the correct response when converting JSON', async () => {
+    const file = new Blob(['{"type":"FeatureCollection","features":[]}'], 'example.json', {
+      type: 'application/json',
+    });
+    file['name'] = 'example.json';
+    const response = await convertJson(file);
+    expect(response).toEqual(
+      getCorrectResponse({ type: 'FeatureCollection', features: [] }, 'example.json'),
+    );
+  });
+
+  it('should throw an error when the JSON is invalid', async () => {
+    const file = new Blob(['{"type":"FeatureCollection","features":[]}'], 'example.json', {
+      type: 'application/json',
+    });
+    file.text = jest.fn().mockResolvedValue('invalid JSON');
+    await expect(convertJson(file)).rejects.toThrow('Unexpected token i in JSON at position 0');
   });
 });
