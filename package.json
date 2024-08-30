@@ -7,7 +7,12 @@
   "homepage": "",
   "keywords": [],
   "author": "Ram Waykar <Waykar_Rambhau.Pandurang@syngenta.com>",
-  "license": "",
+  "license": "MIT",
+  "readmeFilename": "readme.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syngenta-digital/package-node-convert-shape-files-to-geojson"
+  },
   "scripts": {
     "test": "yarn jest --ci --coverage --reporters=default --reporters=jest-junit --max-workers=2 --testTimeout=300000 --verbose",
     "lint": "eslint src/**/*.ts",
