@@ -1,6 +1,7 @@
 import proj4 from 'proj4';
 import JSZip from 'jszip';
 import fs from 'fs';
+import util from 'util';
 
 /**
  * get filename before extension
@@ -122,45 +123,43 @@ export const getFileSize = async (zip: any, zipEntry: any) => {
  * @returns
  */
 export const validateZip = async (file: any) => {
-  const mandatoryExt = ['shp', 'dbf', 'shx'];
-  const providedExt: any = [];
   let missingMandatoryExt: string[] = [];
-  const MAX_FILES = 1000;
-  let fileCount = 0;
-  const MAX_SIZE = 1000000000;
-  let totalSize = 0;
   let error: any;
-  fs.readFile(file, function (err, data) {
-    if (err) {
-      error = err;
-    }
-    JSZip.loadAsync(data).then((zip) => {
-      zip.forEach(async (relativePath, zipEntry) => {
+  try {
+    const mandatoryExt = ['shp', 'dbf', 'shx'];
+    const providedExt: any = [];
+    const MAX_FILES = 1000;
+    let fileCount = 0;
+    const readFile = util.promisify(fs.readFile);
+    const newdata = await readFile(file, 'binary');
+    if (newdata) {
+      const zip = await JSZip.loadAsync(newdata);
+      zip.forEach((relativePath, zipEntry) => {
         fileCount++;
         if (fileCount > MAX_FILES) {
           error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
         }
         if (zipEntry.name) {
-          const fileSize = await getFileSize(zip, zipEntry);
-          totalSize += fileSize;
-          if (totalSize > MAX_SIZE) {
-            error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
-          } else {
-            const ext = getExtension(zipEntry.name, false);
-            if (ext) {
-              providedExt.push(ext);
-            }
+          const ext = getExtension(zipEntry.name, false);
+          if (ext) {
+            providedExt.push(ext);
           }
         }
       });
-
       missingMandatoryExt = mandatoryExt.filter((ext) => {
         return !providedExt.includes(ext);
       });
-    });
-  });
-  return {
-    missingMandatoryExt,
-    error,
-  };
+    } else {
+      error = new Error(`Bad file`);
+    }
+    return {
+      missingMandatoryExt,
+      error,
+    };
+  } catch (err) {
+    return {
+      missingMandatoryExt,
+      error: err,
+    };
+  }
 };
