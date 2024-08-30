@@ -5,6 +5,7 @@ import {
   getCorrectResponse,
   convertJson,
   getFileSize,
+  validateZip,
 } from './../src/utils';
 import { geojson } from './test_constants';
 import { Blob } from 'blob-polyfill';
@@ -159,5 +160,25 @@ describe('getFileSize', () => {
 
     const size = await getFileSize(zip, zipEntry);
     expect(size).toBe(0);
+  });
+});
+
+describe('validateZip', () => {
+  it('should return missing mandatory extensions and no error when zip is valid', async () => {
+    const result = await validateZip('shape_files_for_testing/missing-extensions.zip');
+    expect(result.missingMandatoryExt).toEqual(['dbf', 'shx']);
+    expect(result.error).toBeUndefined();
+  });
+
+  it('should return an error when there is an error reading the zip file', async () => {
+    const result = await validateZip('shape_files_for_testing/map.kml');
+    expect(result.missingMandatoryExt).toEqual([]);
+    expect(result.error).toBeTruthy();
+  });
+
+  it('should not return an error when there is correct zip file', async () => {
+    const result = await validateZip('shape_files_for_testing/map.zip');
+    expect(result.missingMandatoryExt).toEqual([]);
+    expect(result.error).toBeUndefined();
   });
 });
