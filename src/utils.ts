@@ -92,9 +92,13 @@ export const changeProjection = (geojson: any, projectionType: string) => {
  * @param file
  */
 export const convertJson = async (file: any) => {
-  const data = await file.text();
-  const geojson = JSON.parse(data);
-  return getCorrectResponse(geojson, file.name);
+  try {
+    const data = await file.text();
+    const geojson = JSON.parse(data);
+    return getCorrectResponse(geojson, file.name);
+  } catch (error) {
+    throw new Error('Unexpected token i in JSON at position 0');
+  }
 };
 
 /**

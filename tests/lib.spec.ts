@@ -64,8 +64,10 @@ describe('fromWktToGeojson', () => {
   it('should throw an error when the WKT is invalid', async () => {
     const file = new Blob(['INVALID WKT'], 'example.wkt', { type: 'text/plain' });
     file['name'] = 'example.wkt';
-    file.text = jest.fn().mockRejectedValue(new Error('Invalid WKT'));
-    await expect(fromWktToGeojson(file)).rejects.toThrow('Invalid WKT');
+    file.text = jest.fn().mockRejectedValue(new Error('Unexpected token i in JSON at position 0'));
+    await expect(fromWktToGeojson(file)).rejects.toThrow(
+      'Unexpected token i in JSON at position 0',
+    );
   });
 });
 
@@ -87,7 +89,9 @@ describe('fromJsonToGeojson', () => {
   it('should throw an error when the JSON is invalid', async () => {
     const file = new Blob(['INVALID JSON'], 'example.json', { type: 'application/json' });
     file['name'] = 'example.json';
-    file.text = jest.fn().mockRejectedValue(new Error('Invalid WKT'));
-    await expect(fromJsonToGeojson(file)).rejects.toThrow('Invalid WKT');
+    file.text = jest.fn().mockRejectedValue(new Error('Unexpected token i in JSON at position 0'));
+    await expect(fromJsonToGeojson(file)).rejects.toThrow(
+      'Unexpected token i in JSON at position 0',
+    );
   });
 });
