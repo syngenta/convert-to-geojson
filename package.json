@@ -1,5 +1,5 @@
 {
-  "name": "@syngenta-digital/convert-shape-files-to-geojson",
+  "name": "@syngenta/convert-to-geojson",
   "version": "DYNAMIC_VERSION",
   "description": "A common package to convert different shape files to geojson",
   "main": "dist/index.js",
