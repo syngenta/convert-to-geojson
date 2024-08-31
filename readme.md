@@ -4,11 +4,11 @@
 This package will help us to extract the geojson data from different shape files. It supports following files - `zip, kml, wkt, topojson, json, geojson`.
 
 ## Installation
-`npm install --save @syngenta-digital/convert-shape-files-to-geojson`
+`npm install --save @syngenta/convert-to-geojson`
 
 ## How to use?
 Import the package:
-`import getGeojson from '@syngenta-digital/convert-shape-files-to-geojson';`
+`import getGeojson from '@syngenta/convert-to-geojson';`
 
 Call the function:
 `const geojson = await getGeojson(file);`

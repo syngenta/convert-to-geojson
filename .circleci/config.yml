@@ -53,7 +53,7 @@ jobs:
           name: Publish package
           command: |
             echo Publishing version $(cat DYNAMIC_VERSION)
-            curl -ivF "package=@syngenta-digital-convert-shape-files-to-geojson-v$(cat DYNAMIC_VERSION).tgz" "https://${FURY_PUSH_TOKEN}@push.fury.io/syngenta-digital/"
+            curl -ivF "package=@syngenta-convert-to-geojson-v$(cat DYNAMIC_VERSION).tgz" "https://${FURY_PUSH_TOKEN}@push.fury.io/syngenta-digital/"
       - store_artifacts:
           name: "Save the built package."
           path: ./packages/
