@@ -1,7 +1,5 @@
 import proj4 from 'proj4';
 import JSZip from 'jszip';
-import fs from 'fs';
-import util from 'util';
 
 /**
  * get filename before extension
@@ -130,28 +128,22 @@ export const validateZip = async (file: any) => {
     const providedExt: any = [];
     const MAX_FILES = 1000;
     let fileCount = 0;
-    const readFile = util.promisify(fs.readFile);
-    const newdata = await readFile(file, 'binary');
-    if (newdata) {
-      const zip = await JSZip.loadAsync(newdata);
-      zip.forEach((relativePath, zipEntry) => {
-        fileCount++;
-        if (fileCount > MAX_FILES) {
-          error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
+    const zip = await JSZip.loadAsync(file);
+    zip.forEach((relativePath, zipEntry) => {
+      fileCount++;
+      if (fileCount > MAX_FILES) {
+        error = new Error(`Reached max. number of files. Max. files allowed: ${MAX_FILES}`);
+      }
+      if (zipEntry.name) {
+        const ext = getExtension(zipEntry.name, false);
+        if (ext) {
+          providedExt.push(ext);
         }
-        if (zipEntry.name) {
-          const ext = getExtension(zipEntry.name, false);
-          if (ext) {
-            providedExt.push(ext);
-          }
-        }
-      });
-      missingMandatoryExt = mandatoryExt.filter((ext) => {
-        return !providedExt.includes(ext);
-      });
-    } else {
-      error = new Error(`Bad file`);
-    }
+      }
+    });
+    missingMandatoryExt = mandatoryExt.filter((ext) => {
+      return !providedExt.includes(ext);
+    });
     return {
       missingMandatoryExt,
       error,

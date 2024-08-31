@@ -9,6 +9,8 @@ import {
 } from './../src/utils';
 import { geojson } from './test_constants';
 import { Blob } from 'blob-polyfill';
+import fs from 'fs';
+import util from 'util';
 
 describe('getFileName', () => {
   it('returns file name for filename with extension', () => {
@@ -165,7 +167,9 @@ describe('getFileSize', () => {
 
 describe('validateZip', () => {
   it('should return missing mandatory extensions and no error when zip is valid', async () => {
-    const result = await validateZip('shape_files_for_testing/missing-extensions.zip');
+    const readFile = util.promisify(fs.readFile);
+    const newdata = await readFile('shape_files_for_testing/missing-extensions.zip', 'binary');
+    const result = await validateZip(newdata);
     expect(result.missingMandatoryExt).toEqual(['dbf', 'shx']);
     expect(result.error).toBeUndefined();
   });
@@ -177,7 +181,9 @@ describe('validateZip', () => {
   });
 
   it('should not return an error when there is correct zip file', async () => {
-    const result = await validateZip('shape_files_for_testing/map.zip');
+    const readFile = util.promisify(fs.readFile);
+    const newdata = await readFile('shape_files_for_testing/map.zip', 'binary');
+    const result = await validateZip(newdata);
     expect(result.missingMandatoryExt).toEqual([]);
     expect(result.error).toBeUndefined();
   });
