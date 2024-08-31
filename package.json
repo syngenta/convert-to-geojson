@@ -11,13 +11,13 @@
   "readmeFilename": "readme.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/syngenta-digital/package-node-convert-shape-files-to-geojson"
+    "url": "https://github.com/syngenta/convert-to-geojson"
   },
   "scripts": {
-    "test": "yarn jest --ci --coverage --reporters=default --reporters=jest-junit --max-workers=2 --testTimeout=300000 --verbose",
+    "test": "jest --ci --coverage --reporters=default --reporters=jest-junit --max-workers=2 --testTimeout=300000 --verbose",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
-    "build": "yarn lint && yarn tsc --declaration --declarationMap --sourceMap"
+    "build": "lint && tsc --declaration --declarationMap --sourceMap"
   },
   "dependencies": {
     "@mapbox/togeojson": "^0.16.2",
