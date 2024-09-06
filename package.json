@@ -75,7 +75,6 @@
     "preset": "ts-jest"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ]
 }
