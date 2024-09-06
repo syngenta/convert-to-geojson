@@ -4,7 +4,7 @@
 		"target": "es2019",
 		"module": "preserve",
 		"outDir": "dist",
-		"sourceMap": true,
+		"sourceMap": false,
 		"allowSyntheticDefaultImports": true,    
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames":true,

@@ -1,6 +1,6 @@
 {
   "name": "@syngenta/convert-to-geojson",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A common package to convert different shape files to geojson",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -17,7 +17,7 @@
     "test": "jest --ci --coverage --reporters=default --reporters=jest-junit --max-workers=2 --testTimeout=300000 --verbose",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
-    "build": "npm run lint && tsc --declaration --declarationMap --sourceMap"
+    "build": "npm run lint && tsc --declaration"
   },
   "dependencies": {
     "@mapbox/togeojson": "^0.16.2",
@@ -25,17 +25,17 @@
     "proj4": "^2.12.0",
     "shpjs": "^6.1.0",
     "topojson-client": "^3.1.0",
-    "wellknown": "^0.5.0"
-  },
-  "devDependencies": {
-    "@types/jest": "^29.5.12",
+    "wellknown": "^0.5.0",
     "@types/jszip": "^3.4.1",
-    "@types/mapbox": "^1.6.45",
-    "@types/node": "^20.10.7",
     "@types/proj4": "^2.5.5",
     "@types/shpjs": "^3.4.7",
     "@types/topojson-client": "^3.1.4",
     "@types/wellknown": "^0.5.8",
+    "@types/mapbox": "^1.6.45"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.10.7",    
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "blob-polyfill": "^9.0.20240710",
