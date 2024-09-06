@@ -1,9 +1,9 @@
 {
   "name": "@syngenta/convert-to-geojson",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A common package to convert different shape files to geojson",
   "main": "dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "homepage": "",
   "keywords": [],
   "author": "Ram Waykar <Waykar_Rambhau.Pandurang@syngenta.com>",
@@ -17,7 +17,7 @@
     "test": "jest --ci --coverage --reporters=default --reporters=jest-junit --max-workers=2 --testTimeout=300000 --verbose",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
-    "build": "npm run lint && tsc --declaration"
+    "build": "npm run lint && tsc --declaration --declarationMap --sourceMap"
   },
   "dependencies": {
     "@mapbox/togeojson": "^0.16.2",
@@ -75,6 +75,7 @@
     "preset": "ts-jest"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ]
 }
