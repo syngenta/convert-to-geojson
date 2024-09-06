@@ -1,6 +1,6 @@
 {
   "name": "@syngenta/convert-to-geojson",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A common package to convert different shape files to geojson",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -75,7 +75,6 @@
     "preset": "ts-jest"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ]
 }
