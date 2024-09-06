@@ -17,7 +17,7 @@
     "test": "jest --ci --coverage --reporters=default --reporters=jest-junit --max-workers=2 --testTimeout=300000 --verbose",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
-    "build": "lint && tsc --declaration --declarationMap --sourceMap"
+    "build": "npm run lint && tsc --declaration --declarationMap --sourceMap"
   },
   "dependencies": {
     "@mapbox/togeojson": "^0.16.2",
